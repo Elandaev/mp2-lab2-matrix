@@ -63,70 +63,146 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
-} /*-------------------------------------------------------------------------*/
+	if (s > 0) {
+		Size = s;
+		//pVector = new ValType[size];
+		pVector = new ValType[Size];
+	}
+	if (s <= 0 || pVector == 0) {
+		throw(" ");
+	}
+}
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
-} /*-------------------------------------------------------------------------*/
+	this->Size = v.Size;
+	pVector = new ValType[Size];
+	for (int i = 0; i < Size; i++) {
+		this->pVector[i] = v.pVector[i];
+	}
+}
 
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+	if (Size != 0) { delete[]pVector; }
+	pVector = NULL; 
+	Size = 0;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
-    return pVector[0];
+	if (pos >= Size || pos < 0) {
+		throw(" ");
+	}
+    return pVector[pos];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
-    return false;
+	if (this->Size != v.Size) {
+		return false;
+	}
+	for (int i = 0; i < size; i++) {
+		if (this->pVector[i] != v.pVector) {
+			return false;
+		}
+	}
+    return true;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
-    return false;
+	if (this->Size != v.Size) {
+		return true;
+	}
+	for (int i = 0; i < size; i++) {
+		if (this->pVector[i] != v.pVector) {
+			return true;
+		}
+	}
+	return false;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
+	if (this == &v) {
+		return *this;
+	}
+	if (pVector != 0) {
+		Size = 0;
+		delete[]pVector;
+	}
+	Size = v.Size;
+	pVector = new ValType[Size];
+	for (int i = 0; i < Size; i++) {
+		pVector[i] = v.pVector[i];
+	}
     return *this;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
 TVector<ValType> TVector<ValType>::operator+(const ValType &val)
 {
-    return TVector<ValType>();
+	if (Size != val.Size) {
+		throw(" ");
+	}
+	TVector<ValType> tmp(Size);
+	for (int i = 0; i < Size; i++) {
+		tmp pVector[i] = this->pVector[i] + val;
+	}
+    return tmp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычесть скаляр
 TVector<ValType> TVector<ValType>::operator-(const ValType &val)
 {
-    return TVector<ValType>();
+	if (Size != val.Size) {
+		throw(" ");
+	}
+	TVector<ValType> tmp(Size);
+	for (int i = 0; i < Size; i++) {
+		tmp pVector[i] = this->pVector[i] - val;
+	}
+	return tmp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // умножить на скаляр
 TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 {
+
     return TVector<ValType>();
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
-    return TVector<ValType>();
+	if (Size != val.Size) {
+		throw(" ");
+	}
+	TVector<ValType> tmp(Size);
+	for (int i = 0; i < Size; i++) {
+		tmp pVector[i] = this->pVector[i] + val.pVector[i];
+	}
+	return tmp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
-    return TVector<ValType>();
+	if (Size != val.Size) {
+		throw(" ");
+	}
+	TVector<ValType> tmp(Size);
+	for (int i = 0; i < Size; i++) {
+		tmp pVector[i] = this->pVector[i] - val.pVector[i];
+	}
+	return tmp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // скалярное произведение
